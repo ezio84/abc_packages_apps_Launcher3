@@ -21,7 +21,7 @@
     <string name="show_predictive_apps_title">Часто используемые приложения</string>
     <string name="icon_pack">Набор значков</string>
     <string name="icon_pack_summary">Выберите набор значков</string>
-    <string name="adaptive_icons_title">Адаптивные значк</string>
+    <string name="adaptive_icons_title">Адаптивные значки</string>
     <string name="legacy_icons_title">Маска для обычных значков</string>
     <string name="icon_mask_square">Квадрат</string>
     <string name="icon_mask_rounded_square">Квадрат с кругл. углами</string>
@@ -35,7 +35,7 @@
     <string name="show_search_bar_title">Отображать строку поиска</string>
 
     <string name="widget_category_title">Виджеты</string>
-    <string name="show_top_widget_title">Отображать верхний виджет</string>
+    <string name="show_top_widget_title">Отображать виджет даты</string>
 
     <string name="omnijaws_service_error">Ошибка</string>
     <string name="omnijaws_service_unkown">Нет данных о погоде</string>
