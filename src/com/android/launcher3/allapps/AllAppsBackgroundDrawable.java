@@ -16,7 +16,6 @@
 package com.android.launcher3.allapps;
 
 import android.animation.ObjectAnimator;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -94,8 +93,6 @@ public class AllAppsBackgroundDrawable extends Drawable {
         }
     }
 
-    private static final String SYSTEM_THEME = "system_theme";
-
     protected final TransformedImageDrawable mHand;
     protected final TransformedImageDrawable[] mIcons;
     private final int mWidth;
@@ -108,8 +105,9 @@ public class AllAppsBackgroundDrawable extends Drawable {
         mWidth = res.getDimensionPixelSize(R.dimen.all_apps_background_canvas_width);
         mHeight = res.getDimensionPixelSize(R.dimen.all_apps_background_canvas_height);
 
-        final int systemTheme = Settings.System.getInt(context.getContentResolver(), SYSTEM_THEME, 0);
-         switch (systemTheme) {
+        final int systemTheme = Settings.System.getIntForUser(context.getContentResolver(),
+                Settings.System.SYSTEM_THEME, 0, UserHandle.USER_CURRENT);
+        switch (systemTheme) {
             case 1:
                 context = new ContextThemeWrapper(context, R.style.AllAppsEmptySearchBackground);
                 break;
@@ -117,7 +115,8 @@ public class AllAppsBackgroundDrawable extends Drawable {
                 context = new ContextThemeWrapper(context, R.style.AllAppsEmptySearchBackground_Dark);
                 break;
             default:
-                context = new ContextThemeWrapper(context, Themes.getAttrBoolean(context, R.attr.isMainColorDark)
+                context = new ContextThemeWrapper(context, Themes.getAttrBoolean(context,
+                        R.attr.isMainColorDark)
                         ? R.style.AllAppsEmptySearchBackground_Dark
                         : R.style.AllAppsEmptySearchBackground);
                 break;
