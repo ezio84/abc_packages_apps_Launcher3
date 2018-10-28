@@ -23,8 +23,6 @@ import android.view.View;
 
 public class SettingsActivity extends Activity {
 
-    public static boolean restartNeeded = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +46,6 @@ public class SettingsActivity extends Activity {
 
             getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
             addPreferencesFromResource(R.xml.launcher_preferences);
-
-            HomeKeyWatcher mHomeKeyListener = new HomeKeyWatcher(getActivity());
-            mHomeKeyListener.setOnHomePressedListener(() -> {
-                if (restartNeeded) {
-                    Utilities.restart(getActivity());
-                }
-            });
-            mHomeKeyListener.startWatch();
         }
 
         @Override
@@ -78,9 +68,6 @@ public class SettingsActivity extends Activity {
         @Override
         public void onDestroy() {
             super.onDestroy();
-            if (restartNeeded) {
-                Utilities.restart(getActivity());
-            }
         }
     }
 }
