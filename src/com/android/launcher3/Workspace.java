@@ -36,21 +36,16 @@ import android.app.WallpaperManager;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.hardware.camera2.CameraManager;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.os.UserHandle;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -258,10 +253,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     private final WorkspaceStateTransitionAnimation mStateTransitionAnimation;
 
     private GestureDetector mGestureListener;
-    private CameraManager cameraManager;
-
-    // Used to determine camera state
-    private boolean flashLightStatus = false;
     private int mGestureMode;
 
     /**
@@ -342,20 +333,13 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                 break;
             // Flashlight
             case 2:
-                flashLight();
+                Utils.toggleCameraFlash();
                 break;
         }
     }
 
     public void setGestures(int mode) {
         mGestureMode = mode;
-    }
-
-    private void flashLight() {
-        if (getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-            Torch Torch = new Torch(getContext());
-            Torch.execute();
-        }
     }
 
     private boolean openNotifications() {
@@ -3545,34 +3529,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         @Override
         public void onAnimationEnd(Animator animation) {
             onEndStateTransition();
-        }
-    }
-
-    private class Torch extends AsyncTask {
-
-        Torch(Context ctx) {
-            cameraManager = (CameraManager) ctx.getSystemService(Context.CAMERA_SERVICE);
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            if (flashLightStatus) {
-                try {
-                    cameraManager.setTorchMode(cameraManager.getCameraIdList()[0], true);
-                    flashLightStatus = false;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    cameraManager.setTorchMode(cameraManager.getCameraIdList()[0], false);
-                    flashLightStatus = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
         }
     }
 }
